@@ -1,5 +1,7 @@
 using Business.Abstracts;
 using Business.Concrete;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace API
 {
@@ -8,18 +10,25 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            //systemtext 
+            //builder.Services.AddControllers()
+            //    .AddNewtonsoftJson(opt =>
+            //    {
+            //        opt.SerializerSettings.Converters.Add(new StringEnumConverter());
+            //    });
+            builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
-            // Add services to the container.
-            builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Register IUserServices and Services with the DI container
             builder.Services.AddScoped<IUserServices, Services>();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -27,12 +36,11 @@ namespace API
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.MapControllers();
 
             app.Run();
         }
+        
     }
 }

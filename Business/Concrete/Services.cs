@@ -13,10 +13,10 @@ namespace Business.Concrete
 {
     public class Services : IUserServices
     {
-        // JsonSerializerSettings'in tanımlanması
+        
         private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
-            Converters = { new StringEnumConverter() } // Enum'ları string olarak dönüştürür
+            Converters = { new StringEnumConverter() } 
         };
         
         public Task<CreateAddUserResponse> CreateUserAsync(User user)
@@ -31,11 +31,7 @@ namespace Business.Concrete
                 UserType = user.UserType
             };
 
-            //string json = JsonConvert.SerializeObject(userResponse, JsonSerializerSettings);
-
-            //var result = JsonConvert.DeserializeObject<CreateAddUserResponse>(json, JsonSerializerSettings);
-
-            // JSON formatındaki response'u döndür
+          
             return Task.FromResult(userResponse);
 
         }
